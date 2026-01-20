@@ -1,3 +1,7 @@
+import cors from "cors";
+
+app.use(cors()); // дозволяємо всі домени для тесту
+
 import express from "express";
 import crypto from "crypto";
 
