@@ -10,6 +10,11 @@ app.post("/scan", async (req, res) => {
     return res.status(400).json({ error: "Domain is required" });
   }
 
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' })
+})
+
+  
   // TEMP: stub response
   res.json({
     jobId: crypto.randomUUID(),
