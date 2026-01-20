@@ -1,28 +1,21 @@
-import express from "express";
+import express from 'express'
+import cors from 'cors'
 
-const app = express();
-app.use(express.json());
+const app = express()
 
-app.post("/scan", async (req, res) => {
-  const { domain } = req.body;
+app.use(cors())
+app.use(express.json())
 
-  if (!domain) {
-    return res.status(400).json({ error: "Domain is required" });
-  }
-
+// 👇 ОСЬ СЮДИ
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' })
 })
 
-  
-  // TEMP: stub response
-  res.json({
-    jobId: crypto.randomUUID(),
-    status: "queued"
-  });
-});
+// 👇 інші роуты
+app.post('/scan', ...)
+app.post('/scan/status', ...)
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Scan worker running on port ${port}`);
-});
+const PORT = process.env.PORT || 8080
+app.listen(PORT, () => {
+  console.log(`Scan worker running on port ${PORT}`)
+})
