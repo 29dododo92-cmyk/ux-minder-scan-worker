@@ -10,6 +10,38 @@ app.use(cors()); // дозволяємо запити з будь-якого ф�
 app.get("/health", (req, res) => {
   res.json({ status: "ok" });
 });
+let scanStatus = "idle";
+let scanResult = null;
+app.post("/scan", (req, res) => {
+  scanStatus = "in_progress";
+
+  console.log("Scan started");
+
+  setTimeout(() => {
+    scanStatus = "done";
+    scanResult = {
+      pages: [
+        {
+          id: "home",
+          url: "/",
+          screenshot: "https://via.placeholder.com/300x200?text=Home"
+        },
+        {
+          id: "pricing",
+          url: "/pricing",
+          screenshot: "https://via.placeholder.com/300x200?text=Pricing"
+        }
+      ],
+      edges: [
+        { from: "home", to: "pricing" }
+      ]
+    };
+
+    console.log("Scan finished");
+  }, 5000);
+
+  res.json({ status: "started" });
+});
 
 // 🌐 ПАМ'ЯТЬ ДЛЯ JOB
 const jobs: Record<
@@ -48,3 +80,5 @@ app.get("/scan-status/:jobId", (req, res) => {
 // 🚀 Старт сервера
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Scan worker running on port ${port}`));
+
+
