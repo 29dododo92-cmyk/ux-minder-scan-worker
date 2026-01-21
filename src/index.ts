@@ -1,7 +1,14 @@
 import express from "express";
+import cors from "cors";  // додаємо CORS
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// 🔹 Додатково, щоб можна було приймати JSON у POST
+app.use(express.json());
+
+// 🔹 Дозволяємо CORS (щоб fetch з будь-якого браузера працював)
+app.use(cors());
 
 // 🔹 СТАН СКАНУ (ГЛОБАЛЬНО)
 let scanStatus = "idle";
@@ -14,9 +21,14 @@ app.get("/", (req, res) => {
 
 // 🔹 START SCAN
 app.post("/scan", (req, res) => {
+  if (scanStatus === "in_progress") {
+    return res.json({ status: "already in progress" });
+  }
+
   scanStatus = "in_progress";
   console.log("Scan started");
 
+  // Симуляція сканування
   setTimeout(() => {
     scanStatus = "done";
     scanResult = {
@@ -55,5 +67,5 @@ app.get("/scan-result", (req, res) => {
 
 // 🔹 SERVER START
 app.listen(PORT, () => {
-  console.log("Server running on port", PORT);
+  console.log(`Server running on port ${PORT}`);
 });
